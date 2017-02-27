@@ -1,0 +1,35 @@
+{
+  "name": "cordova-plugin-janalytics",
+  "version": "1.0.4",
+  "description": "JAnalytics for cordova plugin",
+  "cordova": {
+    "id": "cordova-plugin-janalytics",
+    "platforms": [
+      "ios",
+      "android"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wilhantian/cordova-plugin-janalytics.git"
+  },
+  "keywords": [
+    "JAnalytics",
+    "analytics",
+    "ecosystem:cordova",
+    "cordova-ios",
+    "cordova-android"
+  ],
+  "engines": [
+    {
+      "name": "cordova",
+      "version": ">=3.0"
+    }
+  ],
+  "author": "wilhantian",
+  "license": "MIT License",
+  "bugs": {
+    "url": "https://github.com/wilhantian/cordova-plugin-janalytics/issues"
+  },
+  "homepage": "https://github.com/wilhantian/cordova-plugin-janalytics#readme"
+}

@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-janalytics" version="1.0.4" xmlns="http://apache.org/cordova/ns/plugins/1.0" xmlns:android="http://schemas.android.com/apk/res/android">
+    <name>JAnalytics</name>
+    <description>JAnalytics for cordova plugin</description>
+    <author>WilhanTian</author>
+    <keywords>JAnalytics,analytics</keywords>
+    <license>MIT License</license>
+
+    <preference name="APP_KEY"/><!--应用ID-->
+    <preference name="CHANNEL" default="DEFAULT_CHANNEL"/><!--渠道字符串 注意！禁止为纯数字-->
+
+    <dependency id="cordova-plugin-jcore" version="1.0.1"/>
+
+    <!--cordova引擎版本限制-->
+    <engines>
+        <engine name="cordova" version=">=3.0" />
+    </engines>
+
+    <js-module name="JAnalytics" src="www/JAnalytics.js">
+        <clobbers target="JAnalytics" />
+    </js-module>
+    
+    <!--IOS-->
+    <platform name="ios">
+        <config-file parent="/*" target="config.xml">
+            <feature name="JAnalytics">
+                <param name="ios-package" value="JAnalytics" />
+            </feature>
+        </config-file>
+
+        <config-file parent="JAnalytics" target="*-Info.plist">
+			<dict>
+				<key>APP_KEY</key>
+				<string>$APP_KEY</string>
+                <key>CHANNEL</key>
+				<string>$CHANNEL</string>
+			</dict>
+		</config-file>
+        
+        <!--库依赖-->
+        <framework src="UIKit.framework" weak="true" />
+        <framework src="SystemConfiguration.framework" weak="true" />
+        <framework src="CoreTelephony.framework" weak="true" />
+        <framework src="CoreGraphics.framework" weak="true" />
+        <framework src="Security.framework" weak="true" />
+        <framework src="Foundation.framework" weak="true" />
+        <framework src="CoreLocation.framework" weak="true" />
+        <framework src="CoreFoundation.framework" weak="true" />
+        <framework src="CFNetwork.framework" weak="true" />
+        <framework src="libz.tbd" weak="true" />
+        <framework src="libresolv.tbd" weak="true" />
+
+        <!--库文件-->
+        <header-file src="src/ios/libs/JANALYTICSService.h" />
+        <header-file src="src/ios/libs/JANALYTICSEventObject.h" />
+        <source-file src="src/ios/libs/janalytics-ios-1.0.0.a" framework="true" />
+        <!--IOS插件源码-->
+        <header-file src="src/ios/JAnalytics.h" />
+        <source-file src="src/ios/JAnalytics.m" />
+    </platform>
+
+    <!--Android-->
+    <platform name="android">
+        <config-file parent="/*" target="res/xml/config.xml">
+            <feature name="JAnalytics">
+                <param name="android-package" value="org.cordova.plugin.janalytics.JAnalytics" />
+            </feature>
+        </config-file>
+        <config-file parent="/*" target="AndroidManifest.xml"/>
+
+        <!--权限-->
+		<config-file parent="/manifest" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.RECEIVER_USER_PRESENT" />
+            <uses-permission android:name="android.permission.INTERNET" />
+            <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+            <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+            <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+            <uses-permission android:name="android.permission.VIBRATE" />
+            <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+            <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+            <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+            <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+            <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+            <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+            <uses-permission android:name="android.permission.GET_TASKS" />
+            <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+		</config-file>
+        
+        <!--基础配置-->
+		<config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <meta-data android:name="JPUSH_APPKEY" android:value="$APP_KEY"/>
+            <meta-data android:name="JPUSH_CHANNEL" android:value="$CHANNEL"/>
+		</config-file>
+
+        <!--jar包-->
+        <source-file src="src/android/libs/janalytics-android_v1.0.0.jar" target-dir="libs" />
+        <!--java源码-->
+        <source-file src="src/android/JAnalytics.java" target-dir="src/org/cordova/plugin/janalytics" />
+    </platform>
+</plugin>
