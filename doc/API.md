@@ -7,7 +7,6 @@
 >
 >   下面将不再提及
 
-[TOC]
 
 ### 设置是否开启debug模式(开启后将打印更多调试信息)
 Janalytics.setDebugModel(enable, success, error);
