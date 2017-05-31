@@ -1,6 +1,6 @@
 {
     "name": "cordova-plugin-janalytics",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "description": "JAnalytics",
     "cordova": {
         "id": "cordova-plugin-janalytics",
@@ -26,7 +26,7 @@
     }],
     "peerDependencies": {
         "cordova-plugin-device": ">=1.0.0",
-        "cordova-plugin-jcore": "1.1.0"
+        "cordova-plugin-jcore": "1.1.4"
     },
     "author": "wilhantian",
     "license": "MIT License",

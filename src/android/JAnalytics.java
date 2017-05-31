@@ -1,4 +1,4 @@
-package org.cordova.plugin.janalytics;
+package cn.jiguang.cordova.analytics;
 
 import org.apache.cordova.CordovaPlugin;
 import org.apache.cordova.CallbackContext;
@@ -101,7 +101,6 @@ public class JAnalytics extends CordovaPlugin {
             event.addKeyValue(key, value);
         }
         JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-
         callbackContext.success();
     }
 
@@ -124,7 +123,6 @@ public class JAnalytics extends CordovaPlugin {
             event.addKeyValue(key, value);
         }
         JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-
         callbackContext.success();
     }
 
@@ -147,7 +145,6 @@ public class JAnalytics extends CordovaPlugin {
             event.addKeyValue(key, value);
         }
         JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-
         callbackContext.success();
     }
 
@@ -170,7 +167,6 @@ public class JAnalytics extends CordovaPlugin {
             event.addKeyValue(key, value);
         }
         JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-
         callbackContext.success();
     }
 
@@ -197,7 +193,6 @@ public class JAnalytics extends CordovaPlugin {
             event.addKeyValue(key, value);
         }
         JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-
         callbackContext.success();
     }
 
@@ -222,14 +217,15 @@ public class JAnalytics extends CordovaPlugin {
         int purchaseGoodsCount = args.getInt(6);
         JSONObject extMap = args.getJSONObject(7);
 
-        PurchaseEvent event = new PurchaseEvent(purchaseGoodsid, purchaseGoodsName, purchasePrice, purchaseSuccess, purchaseCurrency, purchaseGoodsType, purchaseGoodsCount);
-        for(Iterator<String> it = extMap.keys();it.hasNext();){
+        PurchaseEvent event = new PurchaseEvent(purchaseGoodsid, purchaseGoodsName, purchasePrice,
+          purchaseSuccess, purchaseCurrency, purchaseGoodsType, purchaseGoodsCount);
+
+        for(Iterator<String> it = extMap.keys(); it.hasNext();){
             String key = it.next();
             String value = extMap.getString(key);
             event.addKeyValue(key, value);
         }
         JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-
         callbackContext.success();
     }
 }
