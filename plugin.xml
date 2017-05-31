@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-janalytics" 
-    version="1.0.5" 
-    xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+<plugin id="cordova-plugin-janalytics"
+    version="1.0.6"
+    xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <name>JAnalytics</name>
@@ -13,7 +13,7 @@
     <preference name="APP_KEY"/><!--应用ID-->
     <preference name="CHANNEL" default="DEFAULT_CHANNEL"/><!--渠道字符串 注意！禁止为纯数字-->
 
-    <dependency id="cordova-plugin-jcore" version="1.1.0"/>
+    <dependency id="cordova-plugin-jcore" version="1.1.4"/>
 
     <!--cordova引擎版本限制-->
     <engines>
@@ -23,7 +23,7 @@
     <js-module name="JAnalytics" src="www/JAnalytics.js">
         <clobbers target="JAnalytics" />
     </js-module>
-    
+
     <!--IOS-->
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
@@ -40,7 +40,7 @@
 				<string>$CHANNEL</string>
 			</dict>
 		</config-file>
-        
+
         <!--库依赖-->
         <framework src="UIKit.framework" weak="true" />
         <framework src="SystemConfiguration.framework" weak="true" />
@@ -67,13 +67,12 @@
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
             <feature name="JAnalytics">
-                <param name="android-package" value="org.cordova.plugin.janalytics.JAnalytics" />
+                <param name="android-package" value="cn.jiguang.cordova.analytics.JAnalytics" />
             </feature>
         </config-file>
         <config-file parent="/*" target="AndroidManifest.xml"/>
 
-        <!--权限-->
-		<config-file parent="/manifest" target="AndroidManifest.xml">
+    		<config-file parent="/manifest" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.RECEIVER_USER_PRESENT" />
             <uses-permission android:name="android.permission.INTERNET" />
             <uses-permission android:name="android.permission.READ_PHONE_STATE" />
@@ -91,17 +90,17 @@
             <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
             <uses-permission android:name="android.permission.GET_TASKS" />
             <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-		</config-file>
-        
+    		</config-file>
+
         <!--基础配置-->
-		<config-file parent="/manifest/application" target="AndroidManifest.xml">
+    		<config-file parent="/manifest/application" target="AndroidManifest.xml">
             <meta-data android:name="JPUSH_APPKEY" android:value="$APP_KEY"/>
             <meta-data android:name="JPUSH_CHANNEL" android:value="$CHANNEL"/>
-		</config-file>
+    		</config-file>
 
         <!--jar包-->
-        <source-file src="src/android/libs/janalytics-android_v1.1.0.jar" target-dir="libs" />
+        <source-file src="src/android/libs/janalytics-android_v1.1.1.jar" target-dir="libs" />
         <!--java源码-->
-        <source-file src="src/android/JAnalytics.java" target-dir="src/org/cordova/plugin/janalytics" />
+        <source-file src="src/android/JAnalytics.java" target-dir="src/cn/jiguang/cordova/analytics" />
     </platform>
 </plugin>
