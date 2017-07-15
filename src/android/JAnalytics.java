@@ -1,15 +1,23 @@
-package cn.jiguang.cordova.analytics;
+package cn.jiguang.cordova.analyse;
 
-import org.apache.cordova.CordovaPlugin;
+
+import android.content.Context;
+
 import org.apache.cordova.CallbackContext;
-
+import org.apache.cordova.CordovaInterface;
+import org.apache.cordova.CordovaPlugin;
+import org.apache.cordova.CordovaWebView;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import cn.jiguang.analytics.android.api.BrowseEvent;
 import cn.jiguang.analytics.android.api.CalculateEvent;
@@ -20,212 +28,174 @@ import cn.jiguang.analytics.android.api.LoginEvent;
 import cn.jiguang.analytics.android.api.PurchaseEvent;
 import cn.jiguang.analytics.android.api.RegisterEvent;
 
-/**
- * This class echoes a string called from JavaScript.
- */
-public class JAnalytics extends CordovaPlugin {
+public class JAnalysePlugin extends CordovaPlugin {
+
+    private ExecutorService threadPool = Executors.newFixedThreadPool(1);
+
+    private Context mContext;
+
+    private CallbackContext mCallback;
 
     @Override
-    protected void pluginInitialize() {
-        JAnalyticsInterface.init(this.cordova.getActivity().getApplication());
+    public void initialize(CordovaInterface cordova, CordovaWebView webView) {
+        super.initialize(cordova, webView);
+        mContext = cordova.getActivity().getApplicationContext();
     }
 
     @Override
-    public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
-        Class<? extends JAnalytics> that = this.getClass();
-        Method method = null;
-        try {
-            method = that.getDeclaredMethod(action, JSONArray.class, CallbackContext.class);
-            method.setAccessible(true);
-            method.invoke(this, args, callbackContext);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-            callbackContext.error(e.toString());
-            return false;
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-            callbackContext.error(e.toString());
-            return false;
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-            callbackContext.error(e.toString());
-            return false;
-        }
+    public boolean execute(final String action, final JSONArray data,
+                           final CallbackContext callback) throws JSONException {
+        threadPool.execute(new Runnable() {
+
+            @Override
+            public void run() {
+                try {
+                    Method method = JAnalysePlugin.class.getDeclaredMethod(action,
+                            JSONArray.class, CallbackContext.class);
+                    method.invoke(JAnalysePlugin.this, data, callback);
+                } catch (NoSuchMethodException e) {
+                    e.printStackTrace();
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         return true;
     }
 
-    /**
-     * 设置是否开启debug模式。
-     */
-    private void setDebugModel(JSONArray args, CallbackContext callbackContext) throws JSONException{
-        boolean enable = args.getBoolean(0);
+    void init(JSONArray data, CallbackContext callback) {
+        JAnalyticsInterface.init(mContext);
+    }
+
+    void setDebugMode(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        boolean enable = params.getBoolean("enable");
         JAnalyticsInterface.setDebugMode(enable);
-        callbackContext.success();
     }
 
-    /**
-     * 页面启动接口
-     */
-    private void onPageStart(JSONArray args, CallbackContext callbackContext) throws JSONException{
-        String pageName = args.getString(0);
-        JAnalyticsInterface.onPageStart(this.cordova.getActivity(), pageName);
-        callbackContext.success();
+    void initCrashHandler(JSONArray data, CallbackContext callback) {
+        JAnalyticsInterface.initCrashHandler(mContext);
     }
 
-    /**
-     * 页面启动接口
-     */
-    private void onPageEnd(JSONArray args, CallbackContext callbackContext) throws JSONException{
-        String pageName = args.getString(0);
-        JAnalyticsInterface.onPageEnd(this.cordova.getActivity(), pageName);
-        callbackContext.success();
+    void stopCrashHandler(JSONArray data, CallbackContext callback) {
+        JAnalyticsInterface.stopCrashHandler(mContext);
     }
 
-    /**
-     * 计数事件
-     * 字符串字段（key与 value）限制大小不超过256字节，超过限制的key或value该事件将会被丢弃.
-     * 自定义键值对数目不能超过10个，超过10个限制该事件将会被丢弃.
-     *
-     * 自定义计数事件模型中扩展参数中不能使用以下 key 值：
-     * event_id
-     * 此类 key 已被模型使用，如果使用则会导致统计到的数据不准确.
-     */
-    private void onCountEvent(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        String eventId = args.getString(0);
-        JSONObject extMap = args.getJSONObject(1);
+    void onPageStart(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String pageName = params.getString("pageName");
+        JAnalyticsInterface.onPageStart(mContext, pageName);
+    }
+
+    void onPageEnd(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String pageName = params.getString("pageName");
+        JAnalyticsInterface.onPageEnd(mContext, pageName);
+    }
+
+    void addCountEvent(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String eventId = params.getString("eventId");
+        JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
 
         CountEvent event = new CountEvent(eventId);
-        for(Iterator<String> it = extMap.keys();it.hasNext();){
-            String key = it.next();
-            String value = extMap.getString(key);
-            event.addKeyValue(key, value);
+        if (extras != null) {
+            event.addExtMap(toMap(extras));
         }
-        JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-        callbackContext.success();
+        JAnalyticsInterface.onEvent(mContext, event);
     }
 
-    /**
-     * 计算事件
-     * 自定义计算事件模型中扩展参数中不能使用以下 key 值：
-     * event_id
-     * event_value
-     * 此类 key 已被模型使用，如果使用则会导致统计到的数据不准确.
-     */
-    private void onCalculateEvent(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        String eventId = args.getString(0);
-        double eventValue = args.getDouble(1);
-        JSONObject extMap = args.getJSONObject(2);
+    void addCalculateEvent(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String eventId = params.getString("eventId");
+        double eventValue = params.getDouble("eventValue");
+        JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
 
         CalculateEvent event = new CalculateEvent(eventId, eventValue);
-        for(Iterator<String> it = extMap.keys();it.hasNext();){
-            String key = it.next();
-            String value = extMap.getString(key);
-            event.addKeyValue(key, value);
+        if (extras != null) {
+            event.addExtMap(toMap(extras));
         }
-        JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-        callbackContext.success();
+        JAnalyticsInterface.onEvent(mContext, event);
     }
 
-    /**
-     * 登陆事件
-     * 登录事件模型中扩展参数中不能使用以下 key 值：
-     * login_method
-     * login_success
-     * 此类 key 已被模型使用，如果使用则会导致统计到的数据不准确.
-     */
-    private void onLoginEvent(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        String loginMethod = args.getString(0);
-        boolean loginSuccess = args.getBoolean(1);
-        JSONObject extMap = args.getJSONObject(2);
+    void addLoginEvent(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String loginMethod = params.getString("loginMethod");
+        boolean isLoginSuccess = params.getBoolean("isLoginSuccess");
+        JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
 
-        LoginEvent event = new LoginEvent(loginMethod, loginSuccess);
-        for(Iterator<String> it = extMap.keys();it.hasNext();){
-            String key = it.next();
-            String value = extMap.getString(key);
-            event.addKeyValue(key, value);
+        LoginEvent event = new LoginEvent(loginMethod, isLoginSuccess);
+        if (extras != null) {
+            event.addExtMap(toMap(extras));
         }
-        JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-        callbackContext.success();
+        JAnalyticsInterface.onEvent(mContext, event);
     }
 
-    /**
-     * 注册事件
-     * 注册事件模型中扩展参数中不能使用以下 key 值:
-     * register_method
-     * register_success
-     * 此类 key 已被模型使用，如果使用则会导致统计到的数据不准确.
-     */
-    private void onRegisterEvent(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        String registerMethod = args.getString(0);
-        boolean registerSuccess = args.getBoolean(1);
-        JSONObject extMap = args.getJSONObject(2);
+    void addRegisterEvent(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String registerMethod = params.getString("registerMethod");
+        boolean isRegisterSuccess = params.getBoolean("isRegisterSuccess");
+        JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
 
-        RegisterEvent event = new RegisterEvent(registerMethod, registerSuccess);
-        for(Iterator<String> it = extMap.keys();it.hasNext();){
-            String key = it.next();
-            String value = extMap.getString(key);
-            event.addKeyValue(key, value);
+        RegisterEvent event = new RegisterEvent(registerMethod, isRegisterSuccess);
+        if (extras != null) {
+            event.addExtMap(toMap(extras));
         }
-        JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-        callbackContext.success();
+        JAnalyticsInterface.onEvent(mContext, event);
     }
 
-    /**
-     * 浏览事件
-     * 浏览事件模型中扩展参数中不能使用以下 key 值：
-     * browse_content_id
-     * browse_name
-     * browse_type
-     * browse_duration
-     * 此类 key 已被模型使用，如果使用则会导致统计到的数据不准确.
-     */
-    private void onBrowseEvent(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        String browseId = args.getString(0);
-        String browseName = args.getString(1);
-        String browseType = args.getString(2);
-        long browseDuration = args.getLong(3);
-        JSONObject extMap = args.getJSONObject(4);
+    void addBrowseEvent(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String browseId = params.getString("browseId");
+        String browseName = params.getString("browseName");
+        String browseType = params.getString("browseType");
+        long browseDuration = params.getLong("browseDuration");
+        JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
 
         BrowseEvent event = new BrowseEvent(browseId, browseName, browseType, browseDuration);
-        for(Iterator<String> it = extMap.keys();it.hasNext();){
-            String key = it.next();
-            String value = extMap.getString(key);
-            event.addKeyValue(key, value);
+        if (extras != null) {
+            event.addExtMap(toMap(extras));
         }
-        JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-        callbackContext.success();
+        JAnalyticsInterface.onEvent(mContext, event);
     }
 
-    /**
-     * 购买事件
-     * 购买事件模型中扩展参数中不能使用以下 key 值：
-     * purchase_goods_id
-     * purchase_goods_name
-     * purchase_price
-     * purchase_currency
-     * purchase_goods_type
-     * purchase_quantity
-     * 此类 key 已被模型使用，如果使用则会导致统计到的数据不准确.
-     */
-    private void onPurchaseEvent(JSONArray args, CallbackContext callbackContext) throws JSONException {
-        String purchaseGoodsid = args.getString(0);
-        String purchaseGoodsName = args.getString(1);
-        double purchasePrice = args.getDouble(2);
-        boolean purchaseSuccess = args.getBoolean(3);
-        Currency purchaseCurrency = args.getString(4).equals("USD") ? Currency.USD : Currency.CNY;
-        String purchaseGoodsType = args.getString(5);
-        int purchaseGoodsCount = args.getInt(6);
-        JSONObject extMap = args.getJSONObject(7);
+    void addPurchaseEvent(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String goodsId = params.getString("goodsId");
+        String goodsName = params.getString("goodsName");
+        double price = params.getDouble("price");
+        boolean isPurchaseSuccess = params.getBoolean("isPurchaseSuccess");
+        String goodsType = params.getString("goodsType");
+        int goodsCount = params.getInt("goodsCount");
 
-        PurchaseEvent event = new PurchaseEvent(purchaseGoodsid, purchaseGoodsName, purchasePrice,
-          purchaseSuccess, purchaseCurrency, purchaseGoodsType, purchaseGoodsCount);
-
-        for(Iterator<String> it = extMap.keys(); it.hasNext();){
-            String key = it.next();
-            String value = extMap.getString(key);
-            event.addKeyValue(key, value);
+        String currencyStr = params.getString("currency");
+        Currency currency = Currency.CNY;
+        if (currencyStr.equals("USD")) {
+            currency = Currency.USD;
         }
-        JAnalyticsInterface.onEvent(this.cordova.getActivity(), event);
-        callbackContext.success();
+
+        JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
+
+        PurchaseEvent event = new PurchaseEvent(goodsId, goodsName, price, isPurchaseSuccess,
+                currency, goodsType, goodsCount);
+        if (extras != null) {
+            event.addExtMap(toMap(extras));
+        }
+
+        JAnalyticsInterface.onEvent(mContext, event);
+    }
+
+    private Map<String, String> toMap(JSONObject json) throws JSONException {
+        Map<String, String> map = new HashMap<String, String>();
+        Iterator iterator = json.keys();
+        while (iterator.hasNext()) {
+            String key = (String) iterator.next();
+            String value = json.getString(key);
+            map.put(key, value);
+        }
+        return map;
     }
 }
