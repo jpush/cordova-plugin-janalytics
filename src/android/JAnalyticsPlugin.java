@@ -1,5 +1,4 @@
-package cn.jiguang.cordova.analyse;
-
+package cn.jiguang.cordova.analytics;
 
 import android.content.Context;
 
@@ -28,13 +27,11 @@ import cn.jiguang.analytics.android.api.LoginEvent;
 import cn.jiguang.analytics.android.api.PurchaseEvent;
 import cn.jiguang.analytics.android.api.RegisterEvent;
 
-public class JAnalysePlugin extends CordovaPlugin {
+public class JAnalyticsPlugin extends CordovaPlugin {
 
     private ExecutorService threadPool = Executors.newFixedThreadPool(1);
 
     private Context mContext;
-
-    private CallbackContext mCallback;
 
     @Override
     public void initialize(CordovaInterface cordova, CordovaWebView webView) {
@@ -50,9 +47,9 @@ public class JAnalysePlugin extends CordovaPlugin {
             @Override
             public void run() {
                 try {
-                    Method method = JAnalysePlugin.class.getDeclaredMethod(action,
+                    Method method = JAnalyticsPlugin.class.getDeclaredMethod(action,
                             JSONArray.class, CallbackContext.class);
-                    method.invoke(JAnalysePlugin.this, data, callback);
+                    method.invoke(JAnalyticsPlugin.this, data, callback);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
                 } catch (InvocationTargetException e) {
