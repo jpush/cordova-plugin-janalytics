@@ -6,10 +6,10 @@
  *  | |    | |   / /\ \   | |    | |  \ \______| |
  *  | |    | |  /_/  \_\  | |    | |   \_________|
  *
- * Copyright (c) 2016 Shenzhen HXHG. All rights reserved.
+ * Copyright (c) 2016~ Shenzhen HXHG. All rights reserved.
  */
 
-#define JANALYTICS_VERSION_NUMBER 1.0.0
+#define JANALYTICS_VERSION_NUMBER 1.1.3
 
 #import <Foundation/Foundation.h>
 #import "JANALYTICSEventObject.h"
@@ -23,7 +23,7 @@
 /* advertisingIdentifier 广告标识符（IDFA). 可选，IDFA能帮助您更准确的统计*/
 @property (nonatomic, copy) NSString *advertisingId;
 /* isProduction 是否生产环境. 如果为开发状态,设置为NO; 如果为生产状态,应改为 YES.默认为NO */
-@property (nonatomic, assign) BOOL *isProduction;
+@property (nonatomic, assign) BOOL isProduction;
 
 @end
 
@@ -82,7 +82,7 @@
  *
  * SDK 默认开启的日志级别为: Info. 只显示必要的信息, 不打印调试日志.
  *
- * 调用本接口可打开日志级别为: Debug, 打印调试日志.
+ * 请在SDK启动后调用本接口，调用本接口可打开日志级别为: Debug, 打印调试日志.
  * 请在发布产品时改为NO，避免产生不必要的IO
  */
 + (void)setDebug:(BOOL)enable;
