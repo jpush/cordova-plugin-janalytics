@@ -6,7 +6,7 @@
  *  | |    | |   / /\ \   | |    | |  \ \______| |
  *  | |    | |  /_/  \_\  | |    | |   \_________|
  *
- * Copyright (c) 2016 Shenzhen HXHG. All rights reserved.
+ * Copyright (c) 2016~ Shenzhen HXHG. All rights reserved.
  */
 
 #import <Foundation/Foundation.h>

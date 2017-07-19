@@ -1,139 +1,127 @@
-var exec = require('cordova/exec');
+var exec = require('cordova/exec')
 
-function isPlatformIOS() {
-    var isPlatformIOS = device.platform == 'iPhone' ||
-        device.platform == 'iPad' ||
-        device.platform == 'iPod touch' ||
-        device.platform == 'iOS'
-    return isPlatformIOS
+var PLUGIN_NAME = 'JAnalyticsPlugin'
+
+var JAnalytics = {
+  init: function () {
+    exec(null, null, PLUGIN_NAME, 'init', [])
+  },
+  /**
+   * 是否开启 debug 模式（开启后会打印更多调试信息）。
+   *
+   * @param {object} params = {'enable': Boolean}
+   * @param {function} success = function () {} // 成功回调
+   * @param {function} error = function () {}   // 失败回调
+   */
+  setDebugMode: function (params) {
+    exec(null, null, PLUGIN_NAME, 'setDebugMode', [params])
+  },
+  /**
+   * 开启 crash log 上报（默认关闭）。
+   */
+  initCrashHandler: function () {
+    exec(null, null, PLUGIN_NAME, 'initCrashHandler', [])
+  },
+  /**
+   * 关闭 crash log 上报（目前 iOS 无法关闭）。
+   */
+  stopCrashHandler: function () {
+    exec(null, null, PLUGIN_NAME, 'stopCrashHandler', [])
+  },
+  /**
+   * @param {object} params = {
+   *  'pageName': String  // 页面名称，和 onPageEnd 需要成对调用。
+   * }
+   */
+  onPageStart: function (params) {
+    exec(null, null, PLUGIN_NAME, 'onPageStart', [params])
+  },
+  /**
+   * @param {object} params = {
+   *  'pageName': String  // 页面名称，和 onPageStart 需要成对调用。
+   * }
+   */
+  onPageEnd: function (params) {
+    exec(null, null, PLUGIN_NAME, 'onPageEnd', [params])
+  },
+  /**
+   * 添加计数事件。
+   *
+   * @param {object} params = {
+   *  'eventId': String,  // 事件 id
+   *  'extra': Object    // Optional. 扩展参数，类似 {'key1': String, 'key2': String}
+   * }
+   */
+  addCountEvent: function (params) {
+    exec(null, null, PLUGIN_NAME, 'addCountEvent', [params])
+  },
+  /**
+   * 添加计算事件。
+   * 
+   * @param {object} params = {
+   *  'eventId': String,    // 事件 id
+   *  'eventValue': Number, // 事件的值
+   *  'extra': Object      // Optional. 扩展参数，类似 {'key1': 'value1'}
+   * }
+   */
+  addCalculateEvent: function (params) {
+    exec(null, null, PLUGIN_NAME, 'addCalculateEvent', [params])
+  },
+  /**
+   * 添加登录事件。
+   * 
+   * @param {object} params = {
+   *  'loginMethod': String,     // 登录方式
+   *  'isLoginSuccess': Boolean, // 是否登录成功
+   *  'extra': Object           // Optional. 扩展参数，类似 {'key1': 'value1'}
+   * }
+   */
+  addLoginEvent: function (params) {
+    exec(null, null, PLUGIN_NAME, 'addLoginEvent', [params])
+  },
+  /**
+   * 添加注册事件。
+   * 
+   * @param {object} params = {
+   *  'registerMethod': String,     // 登录方式
+   *  'isRegisterSuccess': Boolean, // 是否登录成功
+   *  'extra': Object              // Optional. 扩展参数，类似 {'key1': 'value1'}
+   * }
+   */
+  addRegisterEvent: function (params) {
+    exec(null, null, PLUGIN_NAME, 'addRegisterEvent', [params])
+  },
+  /**
+   * 添加浏览事件。
+   * 
+   * @param {object} params = {
+   *  'browseId': String,       // 浏览内容 id
+   *  'browseName': String,     // 内容名称
+   *  'browseType': String,     // 内容类型
+   *  'browseDuration': Number, // 浏览时长，单位秒
+   *  'extra': Object          // Optional. 扩展参数，类似 {'key1': 'value1'}
+   * }
+   */
+  addBrowseEvent: function (params) {
+    exec(null, null, PLUGIN_NAME, 'addBrowseEvent', [params])
+  },
+  /**
+   * 添加支付事件。
+   * 
+   * @param {object} params = {
+   *  'goodsId': String,            // 商品 id
+   *  'goodsName': String,          // 商品名称
+   *  'price': Number,              // 商品价格
+   *  'currency': String,           // 货币类型：'CNY' / 'USD'
+   *  'isPurchaseSuccess': Boolean, // 是否支付成功
+   *  'goodsType': String,          // 商品类型
+   *  'goodsCount': Number,         // 商品数量
+   *  'extra': Object              // Optional. 扩展参数，类似 {'key1': 'value1'}
+   * }
+   */
+  addPurchaseEvent: function (params) {
+    exec(null, null, PLUGIN_NAME, 'addPurchaseEvent', [params])
+  }
 }
 
-/**
- * 设置是否开启debug模式。
- */
-exports.setDebugModel = function(enable, success, error) {
-    enable = !!enable;
-    exec(success, error, "JAnalytics", "setDebugModel", [enable]);
-};
-
-/**
- * 页面启动接口
- */
-exports.onPageStart = function(pageName, success, error) {
-    pageName = pageName || "";
-    exec(success, error, "JAnalytics", "onPageStart", [pageName]);
-};
-
-/**
- * 页面启动接口
- */
-exports.onPageEnd = function(pageName, success, error) {
-    pageName = pageName || "";
-    exec(success, error, "JAnalytics", "onPageEnd", [pageName]);
-};
-
-/**
- * 计数事件
- */
-exports.onCountEvent = function(eventId, extMap, success, error) {
-    eventId = eventId || "";
-    extMap = extMap || {};
-    exec(success, error, "JAnalytics", "onCountEvent", [eventId, extMap]);
-};
-
-/**
- * 计算事件
- */
-exports.onCalculateEvent = function(eventId, eventValue, extMap, success, error) {
-    eventId = eventId || "";
-    eventValue = eventValue || 0;
-    extMap = extMap || {};
-    exec(success, error, "JAnalytics", "onCalculateEvent", [eventId, eventValue, extMap]);
-};
-
-/**
- * 登陆事件
- */
-exports.onLoginEvent = function(loginMethod, loginSuccess, extMap, success, error) {
-    loginMethod = loginMethod || "";
-    loginSuccess = !!loginSuccess;
-    extMap = extMap || {};
-    exec(success, error, "JAnalytics", "onLoginEvent", [loginMethod, loginSuccess, extMap]);
-};
-
-/**
- * 注册事件
- */
-exports.onRegisterEvent = function(registerMethod, registerSuccess, extMap, success, error) {
-    registerMethod = registerMethod || "";
-    registerSuccess = !!registerSuccess;
-    extMap = extMap || {};
-    exec(success, error, "JAnalytics", "onRegisterEvent", [registerMethod, registerSuccess, extMap]);
-};
-
-/**
- * 浏览事件
- */
-exports.onBrowseEvent = function(
-    browseId,
-    browseName,
-    browseType,
-    browseDuration,
-    extMap,
-    success,
-    error
-) {
-    exec(success, error, "JAnalytics", "onBrowseEvent", [
-        browseId || "",
-        browseName || "",
-        browseType || "",
-        browseDuration || 0,
-        extMap || {}
-    ]);
-};
-
-/**
- * 购买事件
- */
-exports.onPurchaseEvent = function(
-    purchaseGoodsid,
-    purchaseGoodsName,
-    purchasePrice,
-    purchaseSuccess,
-    purchaseCurrency,
-    purchaseGoodsType,
-    purchaseGoodsCount,
-    extMap,
-    success, error
-) {
-    exec(success, error, "JAnalytics", "onPurchaseEvent", [
-        purchaseGoodsid || "",
-        purchaseGoodsName || "",
-        purchasePrice || 0,
-        !!purchaseSuccess,
-        purchaseCurrency || "CNY",
-        purchaseGoodsType || "",
-        purchaseGoodsCount || 0,
-        extMap || {},
-    ]);
-};
-
-/**
- * 上报地理位置
- * 仅对IOS有效
- */
-exports.setLocation = function(latitude, longitude, success, error) {
-    if (isPlatformIOS()) {
-        exec(success, error, "JAnalytics", "setLocation", [latitude || 0, longitude || 0]);
-    }
-};
-
-/**
- * 开启崩溃收集，默认是关闭的
- * 仅对IOS有效
- */
-exports.crashLogON = function(success, error) {
-    if (isPlatformIOS()) {
-        exec(success, error, "JAnalytics", "crashLogON", []);
-    }
-};
+module.exports = JAnalytics

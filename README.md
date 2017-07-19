@@ -1,6 +1,6 @@
 # cordova-plugin-janalytics
-极光推送官方提供的[极光统计](https://www.jiguang.cn/analytics) Cordova 插件。
 
+极光官方提供的[极光统计](https://www.jiguang.cn/analytics) Cordova 插件。
 
 ## Install
 
@@ -25,23 +25,18 @@
   ```
   > 注意: CHANNEL不能为纯数字
 
-
-
 ## API
 
-[iOS／Android 通用 API](doc/API.md)
-
+[API 文档](doc/API.md)
 
 ## 参考资料
 
 [极光官方 JAnalytics 开发文档](https://docs.jiguang.cn/janalytics/guideline/intro/)
 
-
 ## Support
 
-<!-- - [极光社区](http://community.jiguang.cn/) -->
-- QQ 交流群：413602425
-
+- [极光社区](http://community.jiguang.cn/)
+- QQ 交流群：413602425 / 524248013
 
 ## License
 
