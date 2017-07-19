@@ -17,13 +17,13 @@ var JAnalytics = {
     exec(null, null, PLUGIN_NAME, 'setDebugMode', [params])
   },
   /**
-   * 开启 crash log 上报。
+   * 开启 crash log 上报（默认关闭）。
    */
   initCrashHandler: function () {
     exec(null, null, PLUGIN_NAME, 'initCrashHandler', [])
   },
   /**
-   * 关闭 crash log 上报。
+   * 关闭 crash log 上报（目前 iOS 无法关闭）。
    */
   stopCrashHandler: function () {
     exec(null, null, PLUGIN_NAME, 'stopCrashHandler', [])
