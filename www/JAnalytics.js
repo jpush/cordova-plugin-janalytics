@@ -10,8 +10,6 @@ var JAnalytics = {
    * 是否开启 debug 模式（开启后会打印更多调试信息）。
    *
    * @param {object} params = {'enable': Boolean}
-   * @param {function} success = function () {} // 成功回调
-   * @param {function} error = function () {}   // 失败回调
    */
   setDebugMode: function (params) {
     exec(null, null, PLUGIN_NAME, 'setDebugMode', [params])
