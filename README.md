@@ -25,13 +25,9 @@
   ```
   > 注意: CHANNEL不能为纯数字
 
-## API
-
-[API 文档](doc/API.md)
-
 ## 参考资料
 
-[极光官方 JAnalytics 开发文档](https://docs.jiguang.cn/janalytics/guideline/intro/)
+[官方文档](https://docs.jiguang.cn/janalytics/guideline/intro/)
 
 ## Support
 
