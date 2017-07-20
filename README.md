@@ -22,6 +22,10 @@
   cordova plugin add <plugin_local_path> --variable APP_KEY=极光appKey
   ```
 
+## API
+
+可直接参考 [JAnalytics.js](/www/JAnalytics.js) 文件。
+
 ## 参考资料
 
 [官方文档](https://docs.jiguang.cn/janalytics/guideline/intro/)
