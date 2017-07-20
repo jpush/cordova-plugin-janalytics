@@ -35,11 +35,8 @@ var app = {
     onDeviceReady: function() {
         app.receivedEvent('deviceready');
 
-        JAnalytics.setDebugModel(true, function() {
-            alert("debug ok");
-        }, function(err) {
-            alert("debug error:" + err);
-        });
+        JAnalytics.init();
+        JAnalytics.setDebugMode();
 
     },
     // Update DOM on a Received Event
@@ -51,65 +48,35 @@ var app = {
 app.initialize();
 
 login = function() {
-    JAnalytics.onLoginEvent("QQ", true, { p1: "1", p2: "2" }, function() {
-        alert("onLoginEvent ok");
-    }, function(err) {
-        alert("onLoginEvent error: " + err);
-    });
+    JAnalytics.addLoginEvent({'loginMethod': 'QQ', 'isLoginSuccess': true});
 }
 
 register = function() {
-    JAnalytics.onRegisterEvent("Wechat", true, { p1: "1", p2: "2" }, function() {
-        alert("onRegisterEvent ok");
-    }, function(err) {
-        alert("onRegisterEvent error: " + err);
-    });
+    JAnalytics.addRegisterEvent({'registerMethod': 'QQ', 'isRegisterSuccess': true});
 }
 
 pageStart = function() {
-    JAnalytics.onPageStart("TestPage", function() {
-        alert("onPageStart ok");
-    }, function(err) {
-        alert("onPageStart err: " + err);
-    });
+    JAnalytics.onPageStart({'pageName': 'TestPage'});
 }
 
 pageEnd = function() {
-    JAnalytics.onPageEnd("TestPage", function() {
-        alert("onPageEnd ok");
-    }, function(err) {
-        alert("onPageEnd err: " + err);
-    });
+    JAnalytics.onPageEnd({'pageName': 'TestPage'});
 }
 
 count = function() {
-    JAnalytics.onCountEvent("CountTest", { p1: "1", p2: "2" }, function() {
-        alert("onCountEvent ok");
-    }, function(err) {
-        alert("onCountEvent err: " + err);
-    });
+    JAnalytics.addCountEvent({'eventId': 'CountTest'});
 }
 
 calculate = function() {
-    JAnalytics.onCalculateEvent("CalculateTest", 1, { p1: "1", p2: "2" }, function() {
-        alert("onCalculateEvent ok");
-    }, function(err) {
-        alert("onCalculateEvent err: " + err);
-    });
+    JAnalytics.addCalculateEvent({'eventId': 'CalculateTest', 'eventValue': 1});
 }
 
 see = function() {
-    JAnalytics.onBrowseEvent("BrowseTestId", "BrowseTestName", "BrowseTestType", 3000, { p1: "1", p2: "2" }, function() {
-        alert("onBrowseEvent ok");
-    }, function(err) {
-        alert("onBrowseEvent err: " + err);
-    });
+    JAnalytics.addBrowseEvent({'browseId': 'BrowseTest', 'browseName': '深圳新闻',
+        'browseType': 'news', 'browseDuration': 10});
 }
 
 buy = function() {
-    JAnalytics.onPurchaseEvent("purchaseGoodsid", "purchaseGoodsName", 1, true, "CNY", "purchaseGoodsType", 1, { p1: "1", p2: "2" }, function() {
-        alert("onPurchaseEvent ok");
-    }, function(err) {
-        alert("onPurchaseEvent err: " + err);
-    });
+    JAnalytics.addPurchaseEvent({'goodsId': 'GoodsTest', 'goodsName': '篮球', 'price': 30,
+        'currency': 'CNY', 'isPurchaseSuccess': true, 'goodsType': 'sport', 'goodsCount': 1});
 }

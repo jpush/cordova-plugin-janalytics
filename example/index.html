@@ -29,25 +29,16 @@
             * Disables use of inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
                 * Enable inline JS: add 'unsafe-inline' to default-src
         -->
-    <!--<meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *">-->
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
     <link rel="stylesheet" type="text/css" href="css/index.css">
     <link rel="stylesheet" type="text/css" href="css/bootstrap.css">
-    <title>Hello World</title>
 </head>
 
 <body style="text-align: center;">
-    <!--<button class="button green" onclick="alert('a')">触发登陆事件</button>
-    <a href="javascript:void(0)" class="button green">触发注册事件</a>
-    <a href="javascript:void(0)" class="button green">触发页面进入</a>
-    <a href="javascript:void(0)" class="button green">触发页面退出</a>
-    <a href="javascript:void(0)" class="button green">触发计数事件</a>
-    <a href="javascript:void(0)" class="button green">触发浏览事件</a>
-    <a href="javascript:void(0)" class="button green">触发购买事件</a>-->
     <div style="padding: 10%;margin-top: 20%;">
-        <button type="button" class="btn btn-primary btn-block" onclick="login()">触发登陆事件</button>
+        <button type="button" class="btn btn-primary btn-block" onclick="login()">触发登录事件</button>
         <button type="button" class="btn btn-primary btn-block" onclick="register()">触发注册事件</button>
         <button type="button" class="btn btn-primary btn-block" onclick="pageStart()">触发页面进入</button>
         <button type="button" class="btn btn-primary btn-block" onclick="pageEnd()">触发页面退出</button>
@@ -59,5 +50,4 @@
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
 </body>
-
 </html>

@@ -4,34 +4,27 @@
 
 ## Install
 
-本插件依赖 [cordova-plugin-jcore](https://github.com/wilhantian/cordova-plugin-jcore)，该插件随本插件安装时自动安装。
-
-- 通过cordova plugin 安装，要求 Cordova CLI 5.0+：
+- 通过 cordova plugin 安装，要求 Cordova CLI 5.0+：
 
   ```shell
-  cordova plugin add cordova-plugin-janalytics --variable API_KEY=极光appKey --variable CHANNEL=渠道名
+  cordova plugin add cordova-plugin-janalytics --variable APP_KEY=极光appKey
   ```
 
 - 或直接通过 url 安装：
 
   ```shell
-  cordova plugin add https://github.com/wilhantian/cordova-plugin-janalytics --variable API_KEY=极光appKey --variable CHANNEL=渠道名
+  cordova plugin add https://github.com/jpush/cordova-plugin-janalytics --variable APP_KEY=极光appKey
   ```
 
 - 或下载到本地安装：
 
   ```shell
-  cordova plugin add Your_Plugin_Path  --variable API_KEY=极光KEY --variable CHANNEL=渠道名
+  cordova plugin add <plugin_local_path> --variable APP_KEY=极光appKey
   ```
-  > 注意: CHANNEL不能为纯数字
-
-## API
-
-[API 文档](doc/API.md)
 
 ## 参考资料
 
-[极光官方 JAnalytics 开发文档](https://docs.jiguang.cn/janalytics/guideline/intro/)
+[官方文档](https://docs.jiguang.cn/janalytics/guideline/intro/)
 
 ## Support
 
