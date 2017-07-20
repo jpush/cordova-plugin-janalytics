@@ -20,7 +20,7 @@
         "cordova-ios",
         "cordova-android"
     ],
-    "peerDependencies": {
+    "devDependencies": {
         "cordova-plugin-device": "*",
         "cordova-plugin-jcore": "*"
     },
