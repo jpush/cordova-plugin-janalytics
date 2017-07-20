@@ -47,7 +47,7 @@ var JAnalytics = {
    *
    * @param {object} params = {
    *  'eventId': String,  // 事件 id
-   *  'extra': Object    // Optional. 扩展参数，类似 {'key1': String, 'key2': String}
+   *  'extras': object    // Optional. 扩展参数，类似 {'key1': String, 'key2': String}
    * }
    */
   addCountEvent: function (params) {
@@ -59,7 +59,7 @@ var JAnalytics = {
    * @param {object} params = {
    *  'eventId': String,    // 事件 id
    *  'eventValue': Number, // 事件的值
-   *  'extra': Object      // Optional. 扩展参数，类似 {'key1': 'value1'}
+   *  'extras': object      // Optional. 扩展参数，类似 {'key1': 'value1'}
    * }
    */
   addCalculateEvent: function (params) {
@@ -71,7 +71,7 @@ var JAnalytics = {
    * @param {object} params = {
    *  'loginMethod': String,     // 登录方式
    *  'isLoginSuccess': Boolean, // 是否登录成功
-   *  'extra': Object           // Optional. 扩展参数，类似 {'key1': 'value1'}
+   *  'extras': object           // Optional. 扩展参数，类似 {'key1': 'value1'}
    * }
    */
   addLoginEvent: function (params) {
@@ -83,7 +83,7 @@ var JAnalytics = {
    * @param {object} params = {
    *  'registerMethod': String,     // 登录方式
    *  'isRegisterSuccess': Boolean, // 是否登录成功
-   *  'extra': Object              // Optional. 扩展参数，类似 {'key1': 'value1'}
+   *  'extras': object              // Optional. 扩展参数，类似 {'key1': 'value1'}
    * }
    */
   addRegisterEvent: function (params) {
@@ -97,7 +97,7 @@ var JAnalytics = {
    *  'browseName': String,     // 内容名称
    *  'browseType': String,     // 内容类型
    *  'browseDuration': Number, // 浏览时长，单位秒
-   *  'extra': Object          // Optional. 扩展参数，类似 {'key1': 'value1'}
+   *  'extras': object          // Optional. 扩展参数，类似 {'key1': 'value1'}
    * }
    */
   addBrowseEvent: function (params) {
@@ -114,7 +114,7 @@ var JAnalytics = {
    *  'isPurchaseSuccess': Boolean, // 是否支付成功
    *  'goodsType': String,          // 商品类型
    *  'goodsCount': Number,         // 商品数量
-   *  'extra': Object              // Optional. 扩展参数，类似 {'key1': 'value1'}
+   *  'extras': object              // Optional. 扩展参数，类似 {'key1': 'value1'}
    * }
    */
   addPurchaseEvent: function (params) {
