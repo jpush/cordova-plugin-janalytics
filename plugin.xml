@@ -11,9 +11,8 @@
     <license>MIT License</license>
 
     <preference name="APP_KEY"/>
-    <preference name="CHANNEL" default="DEFAULT_CHANNEL"/>
 
-    <dependency id="cordova-plugin-jcore" version="1.1.4"/>
+    <dependency id="cordova-plugin-jcore" version="*"/>
 
     <engines>
         <engine name="cordova" version=">=3.0" />
@@ -26,8 +25,8 @@
     <!-- iOS -->
     <platform name="ios">
         <config-file parent="/*" target="config.xml">
-            <feature name="JAnalytics">
-                <param name="ios-package" value="JAnalytics" />
+            <feature name="JAnalyticsPlugin">
+                <param name="ios-package" value="JAnalyticsPlugin" />
             </feature>
         </config-file>
 
@@ -35,8 +34,6 @@
 			<dict>
 				<key>APP_KEY</key>
 				<string>$APP_KEY</string>
-                <key>CHANNEL</key>
-				<string>$CHANNEL</string>
 			</dict>
 		</config-file>
 
@@ -66,8 +63,8 @@
     <!-- Android -->
     <platform name="android">
         <config-file parent="/*" target="res/xml/config.xml">
-            <feature name="JAnalytics">
-                <param name="android-package" value="cn.jiguang.cordova.analytics.JAnalytics" />
+            <feature name="JAnalyticsPlugin">
+                <param name="android-package" value="cn.jiguang.cordova.analytics.JAnalyticsPlugin" />
             </feature>
         </config-file>
 
@@ -82,7 +79,6 @@
         <!--基础配置-->
     	<config-file parent="/manifest/application" target="AndroidManifest.xml">
             <meta-data android:name="JPUSH_APPKEY" android:value="$APP_KEY"/>
-            <meta-data android:name="JPUSH_CHANNEL" android:value="$CHANNEL"/>
     	</config-file>
 
         <source-file src="src/android/libs/janalytics-android_v1.1.1.jar" target-dir="libs" />
