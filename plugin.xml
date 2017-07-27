@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plugin id="cordova-plugin-janalytics"
-    version="1.1.1"
+    version="1.1.2"
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -81,7 +81,7 @@
             <meta-data android:name="JPUSH_APPKEY" android:value="$APP_KEY"/>
     	</config-file>
 
-        <source-file src="src/android/libs/janalytics-android_v1.1.1.jar" target-dir="libs" />
+        <source-file src="src/android/libs/janalytics-android-1.1.2.jar" target-dir="libs" />
         <source-file src="src/android/JAnalyticsPlugin.java" target-dir="src/cn/jiguang/cordova/analytics" />
     </platform>
 </plugin>
