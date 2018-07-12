@@ -36,7 +36,7 @@ var app = {
         app.receivedEvent('deviceready');
 
         JAnalytics.init();
-        JAnalytics.setDebugMode();
+        JAnalytics.setDebugMode({ enable: true });
 
     },
     // Update DOM on a Received Event
