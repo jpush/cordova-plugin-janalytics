@@ -26,5 +26,7 @@
 
 - (void)addPurchaseEvent:(CDVInvokedUrlCommand *)command;
 
+- (void)setAnalyticsReportPeriod:(CDVInvokedUrlCommand *)command;
+
 - (void)identifyAccount:(CDVInvokedUrlCommand *)command;
 @end

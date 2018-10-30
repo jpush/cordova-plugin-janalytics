@@ -138,9 +138,13 @@
     [JANALYTICSService eventRecord:event];
 }
 
+- (void)setAnalyticsReportPeriod:(CDVInvokedUrlCommand *)command {
+  NSDictionary *params = [command.arguments objectAtIndex:0];
+  [JANALYTICSService setFrequency:[params[@"period"] unsignedIntegerValue]];
+}
+
 - (void)identifyAccount:(CDVInvokedUrlCommand *)command {
   NSDictionary *params = [command.arguments objectAtIndex:0];
-  
   
   JANALYTICSUserInfo *userInfo = [[JANALYTICSUserInfo alloc] init];
   userInfo.accountID = params[@"accountID"];
