@@ -138,21 +138,6 @@
     [JANALYTICSService eventRecord:event];
 }
 
-//{
-//  *  'accountID': String,            // 账号ID
-//  *  'name': String,                 // 姓名
-//  *  'creationTime': Number,         // 账号创建时间, 时间戳
-//  *  'sex': Number,                  // 性别, 0未知 1男 2女/不能为其他数字，默认为0
-//  *  'paid': Number,                 // 是否付费, 0未知 1是 2否/不能为其他数字，默认为0
-//  *  'birthdate': String,            // 出生年月, yyyyMMdd格式校验
-//  *  'phone': String,                // 手机号码, 手机号码校验
-//  *  'email': String,                // 电子邮件, 邮箱格式校验
-//  *  'weiboID': String,              // 新浪微博ID
-//  *  'wechatID': String,             // 微信ID
-//  *  'qqID': String,                 // QQ ID
-//  *  'extras': object                // Optional. 扩展参数，类似 {'key1': 'value1'}
-//  * }
-
 - (void)identifyAccount:(CDVInvokedUrlCommand *)command {
   NSDictionary *params = [command.arguments objectAtIndex:0];
   
@@ -189,8 +174,13 @@
   }
   
   [JANALYTICSService identifyAccount:userInfo with:^(NSInteger err, NSString *msg) {
+    CDVPluginResult *result;
     if (err) {
-       CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: msg];
+       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: msg];
+      [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    } else {
+
+      result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
       [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
     }
   }];
