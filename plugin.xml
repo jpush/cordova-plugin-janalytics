@@ -49,7 +49,7 @@
         <!-- 库文件 -->
         <header-file src="src/ios/libs/JANALYTICSService.h" />
         <header-file src="src/ios/libs/JANALYTICSEventObject.h" />
-        <source-file src="src/ios/libs/janalytics-ios-1.1.3.a" framework="true" />
+        <source-file src="src/ios/libs/janalytics-ios-1.2.1.a" framework="true" />
         
         <!-- iOS 插件原生代码 -->
         <header-file src="src/ios/JAnalyticsPlugin.h" />
