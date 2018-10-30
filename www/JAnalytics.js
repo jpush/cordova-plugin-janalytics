@@ -134,7 +134,7 @@ var JAnalytics = {
    * 设置统计上报的自动周期，未调用前默认即时上报
    *
    * @param {object} params = {
-   *  'channel': Number  //周期，单位秒，最小10秒，最大1天，超出范围会打印调用失败日志。传0表示统计数据即时上报
+   *  'period': Number  //周期，单位秒，最小10秒，最大1天，超出范围会打印调用失败日志。传0表示统计数据即时上报
    * }
    */
   setAnalyticsReportPeriod: function(params) {
@@ -146,12 +146,12 @@ var JAnalytics = {
    * @param {object} params = {
    *  'accountID': String,            // 账号ID
    *  'name': String,                 // 姓名
-   *  'creationTime': Number,         // 账号创建时间
-   *  'sex': Number,                  // 性别
-   *  'paid': Number,                 // 是否付费
-   *  'birthdate': Number,            // 出生年月
-   *  'phone': String,                // 手机号码
-   *  'email': String,                // 电子邮件
+   *  'creationTime': Number,         // 账号创建时间, 时间戳
+   *  'sex': Number,                  // 性别, 0未知 1男 2女/不能为其他数字，默认为0
+   *  'paid': Number,                 // 是否付费, 0未知 1是 2否/不能为其他数字，默认为0
+   *  'birthdate': String,            // 出生年月, yyyyMMdd格式校验
+   *  'phone': String,                // 手机号码, 手机号码校验
+   *  'email': String,                // 电子邮件, 邮箱格式校验
    *  'weiboID': String,              // 新浪微博ID
    *  'wechatID': String,             // 微信ID
    *  'qqID': String,                 // QQ ID

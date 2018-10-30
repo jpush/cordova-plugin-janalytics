@@ -1,6 +1,7 @@
 package cn.jiguang.cordova.analytics;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaInterface;
@@ -18,6 +19,8 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import cn.jiguang.analytics.android.api.Account;
+import cn.jiguang.analytics.android.api.AccountCallback;
 import cn.jiguang.analytics.android.api.BrowseEvent;
 import cn.jiguang.analytics.android.api.CalculateEvent;
 import cn.jiguang.analytics.android.api.CountEvent;
@@ -40,15 +43,15 @@ public class JAnalyticsPlugin extends CordovaPlugin {
     }
 
     @Override
-    public boolean execute(final String action, final JSONArray data,
-                           final CallbackContext callback) throws JSONException {
+    public boolean execute(final String action, final JSONArray data, final CallbackContext callback)
+            throws JSONException {
         threadPool.execute(new Runnable() {
 
             @Override
             public void run() {
                 try {
-                    Method method = JAnalyticsPlugin.class.getDeclaredMethod(action,
-                            JSONArray.class, CallbackContext.class);
+                    Method method = JAnalyticsPlugin.class.getDeclaredMethod(action, JSONArray.class,
+                            CallbackContext.class);
                     method.invoke(JAnalyticsPlugin.this, data, callback);
                 } catch (NoSuchMethodException e) {
                     e.printStackTrace();
@@ -79,6 +82,12 @@ public class JAnalyticsPlugin extends CordovaPlugin {
 
     void stopCrashHandler(JSONArray data, CallbackContext callback) {
         JAnalyticsInterface.stopCrashHandler(mContext);
+    }
+
+    void setChannel(JSONArray data, CallbackContext callback) throws JSONException {
+        JSONObject params = data.getJSONObject(0);
+        String channel = params.getString("channel");
+        JAnalyticsInterface.setChannel(mContext, channel);
     }
 
     void onPageStart(JSONArray data, CallbackContext callback) throws JSONException {
@@ -176,13 +185,66 @@ public class JAnalyticsPlugin extends CordovaPlugin {
 
         JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
 
-        PurchaseEvent event = new PurchaseEvent(goodsId, goodsName, price, isPurchaseSuccess,
-                currency, goodsType, goodsCount);
+        PurchaseEvent event = new PurchaseEvent(goodsId, goodsName, price, isPurchaseSuccess, currency, goodsType,
+                goodsCount);
         if (extras != null) {
             event.addExtMap(toMap(extras));
         }
 
         JAnalyticsInterface.onEvent(mContext, event);
+    }
+
+    void setAnalyticsReportPeriod(JSONArray data, CallbackContext callback) throws JSONException {// ......
+        JSONObject params = data.getJSONObject(0);
+        int period = params.getInt("period");
+        JAnalyticsInterface.setAnalyticsReportPeriod(mContext, period);
+    }
+
+    void identifyAccount(JSONArray data, CallbackContext callback) throws JSONException {// ......
+        JSONObject params = data.getJSONObject(0);
+        String accountID = params.getString("accountID");
+        long creationTime = params.getLong("creationTime");
+        String name = params.getString("name");
+        int sex = params.getInt("sex");
+        int paid = params.getInt("paid");
+        String birthdate = params.getString("birthdate");
+        String phone = params.getString("phone");
+        String email = params.getString("email");
+        String weiboID = params.getString("weiboID");
+        String wechatID = params.getString("wechatID");
+        String qqID = params.getString("qqID");
+        JSONObject extras = params.has("extras") ? params.getJSONObject("extras") : null;
+
+        Account account = new Account(accountID);
+        account.setCreationTime(creationTime); // 账户创建的时间戳
+        account.setName(name);
+        account.setSex(sex);
+        account.setPaid(paid);
+        account.setBirthdate(birthdate); // "19880920"是yyyyMMdd格式的字符串
+        account.setPhone(phone);
+        account.setEmail(email);
+        account.setWeiboId(weiboID);
+        account.setWechatId(wechatID);
+        account.setQqId(qqID);
+        if (extras != null) {
+            Iterator iterator = extras.keys();
+            while (iterator.hasNext()) {
+                String key = (String) iterator.next();
+                String value = extras.getString(key);
+                account.setExtraAttr(key, value); // key如果为空，或者以极光内部namespace(符号$)开头，会设置失败并打印日志
+            }
+        }
+        JAnalyticsInterface.identifyAccount(mContext, account, new AccountCallback() {
+            @Override
+            public void callback(int code, String msg) {
+                if (code == 0) {
+                    callback.success();
+                } else {
+                    Log.i(JAnalyticsPlugin.class.getSimpleName(), "Identify account error code " + code + " :" + msg);
+                    callback.error(msg);
+                }
+            }
+        });
     }
 
     private Map<String, String> toMap(JSONObject json) throws JSONException {
