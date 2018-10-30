@@ -26,4 +26,5 @@
 
 - (void)addPurchaseEvent:(CDVInvokedUrlCommand *)command;
 
+- (void)identifyAccount:(CDVInvokedUrlCommand *)command;
 @end

@@ -138,4 +138,62 @@
     [JANALYTICSService eventRecord:event];
 }
 
+//{
+//  *  'accountID': String,            // 账号ID
+//  *  'name': String,                 // 姓名
+//  *  'creationTime': Number,         // 账号创建时间, 时间戳
+//  *  'sex': Number,                  // 性别, 0未知 1男 2女/不能为其他数字，默认为0
+//  *  'paid': Number,                 // 是否付费, 0未知 1是 2否/不能为其他数字，默认为0
+//  *  'birthdate': String,            // 出生年月, yyyyMMdd格式校验
+//  *  'phone': String,                // 手机号码, 手机号码校验
+//  *  'email': String,                // 电子邮件, 邮箱格式校验
+//  *  'weiboID': String,              // 新浪微博ID
+//  *  'wechatID': String,             // 微信ID
+//  *  'qqID': String,                 // QQ ID
+//  *  'extras': object                // Optional. 扩展参数，类似 {'key1': 'value1'}
+//  * }
+
+- (void)identifyAccount:(CDVInvokedUrlCommand *)command {
+  NSDictionary *params = [command.arguments objectAtIndex:0];
+  
+  
+  JANALYTICSUserInfo *userInfo = [[JANALYTICSUserInfo alloc] init];
+  userInfo.accountID = params[@"accountID"];
+  userInfo.name = params[@"name"];
+  userInfo.creationTime = [params[@"creationTime"] doubleValue];
+  if ([params[@"sex"] intValue] == 1) {
+    userInfo.sex = JANALYTICSSexMale;
+  } else if ([params[@"creationTime"] intValue] == 2) {
+    userInfo.sex = JANALYTICSSexFemale;
+  } else {
+    userInfo.sex = JANALYTICSSexUnknown;
+  }
+  
+  if ([params[@"paid"] intValue] == 1) {
+    userInfo.paid = JANALYTICSPaidPaid;
+  } else if ([params[@"creationTime"] intValue] == 2) {
+    userInfo.paid = JANALYTICSPaidUnpaid;
+  } else {
+    userInfo.paid = JANALYTICSPaidUnknown;
+  }
+  
+  userInfo.birthdate = params[@"birthdate"];
+  userInfo.phone = params[@"phone"];
+  userInfo.email = params[@"email"];
+  userInfo.weiboID = params[@"weiboID"];
+  userInfo.wechatID = params[@"wechatID"];
+  userInfo.qqID = params[@"qqID"];
+  NSDictionary *extras = params[@"extras"];
+  for (NSString* key in extras.allKeys) {
+    [userInfo setExtraObject:extras[key] forKey:key];
+  }
+  
+  [JANALYTICSService identifyAccount:userInfo with:^(NSInteger err, NSString *msg) {
+    if (err) {
+       CDVPluginResult *result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: msg];
+      [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }
+  }];
+}
+
 @end
