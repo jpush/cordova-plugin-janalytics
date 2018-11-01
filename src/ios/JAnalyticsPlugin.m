@@ -138,4 +138,56 @@
     [JANALYTICSService eventRecord:event];
 }
 
+- (void)setAnalyticsReportPeriod:(CDVInvokedUrlCommand *)command {
+  NSDictionary *params = [command.arguments objectAtIndex:0];
+  [JANALYTICSService setFrequency:[params[@"period"] unsignedIntegerValue]];
+}
+
+- (void)identifyAccount:(CDVInvokedUrlCommand *)command {
+  NSDictionary *params = [command.arguments objectAtIndex:0];
+  
+  JANALYTICSUserInfo *userInfo = [[JANALYTICSUserInfo alloc] init];
+  userInfo.accountID = params[@"accountID"];
+  userInfo.name = params[@"name"];
+  userInfo.creationTime = [params[@"creationTime"] doubleValue];
+  if ([params[@"sex"] intValue] == 1) {
+    userInfo.sex = JANALYTICSSexMale;
+  } else if ([params[@"creationTime"] intValue] == 2) {
+    userInfo.sex = JANALYTICSSexFemale;
+  } else {
+    userInfo.sex = JANALYTICSSexUnknown;
+  }
+  
+  if ([params[@"paid"] intValue] == 1) {
+    userInfo.paid = JANALYTICSPaidPaid;
+  } else if ([params[@"creationTime"] intValue] == 2) {
+    userInfo.paid = JANALYTICSPaidUnpaid;
+  } else {
+    userInfo.paid = JANALYTICSPaidUnknown;
+  }
+  
+  userInfo.birthdate = params[@"birthdate"];
+  userInfo.phone = params[@"phone"];
+  userInfo.email = params[@"email"];
+  userInfo.weiboID = params[@"weiboID"];
+  userInfo.wechatID = params[@"wechatID"];
+  userInfo.qqID = params[@"qqID"];
+  NSDictionary *extras = params[@"extras"];
+  for (NSString* key in extras.allKeys) {
+    [userInfo setExtraObject:extras[key] forKey:key];
+  }
+  
+  [JANALYTICSService identifyAccount:userInfo with:^(NSInteger err, NSString *msg) {
+    CDVPluginResult *result;
+    if (err) {
+       result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString: msg];
+      [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    } else {
+
+      result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK];
+      [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+    }
+  }];
+}
+
 @end
