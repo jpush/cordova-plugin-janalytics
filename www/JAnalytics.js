@@ -121,6 +121,7 @@ var JAnalytics = {
     exec(null, null, PLUGIN_NAME, "addPurchaseEvent", [params]);
   },
   /**
+   * Android Only;
    * 动态配置channel，优先级比AndroidManifest里配置的高
    *
    * @param {object} params = {
@@ -128,7 +129,9 @@ var JAnalytics = {
    * }
    */
   setChannel: function(params) {
-    exec(null, null, PLUGIN_NAME, "setChannel", [params]);
+     if (device.platform === "Android") {
+       exec(null, null, PLUGIN_NAME, "setChannel", [params]);  
+     }
   },
   /**
    * 设置统计上报的自动周期，未调用前默认即时上报
