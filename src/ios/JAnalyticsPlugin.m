@@ -49,7 +49,7 @@
 - (void)addCountEvent:(CDVInvokedUrlCommand *)command {
     NSDictionary *params = [command.arguments objectAtIndex:0];
     NSString *eventId = params[@"eventId"];
-    NSDictionary<NSString *, NSString *> *extra = params[@"extra"];
+    NSDictionary<NSString *, NSString *> *extra = params[@"extras"];
     
     JANALYTICSCountEvent *event = [[JANALYTICSCountEvent alloc] init];
     event.eventID = eventId;
@@ -61,7 +61,7 @@
     NSDictionary *params = [command.arguments objectAtIndex:0];
     NSString *eventId = params[@"eventId"];
     NSNumber *eventValue = params[@"eventValue"];
-    NSDictionary<NSString *, NSString *> *extra = params[@"extra"];
+    NSDictionary<NSString *, NSString *> *extra = params[@"extras"];
     
     JANALYTICSCalculateEvent *event = [[JANALYTICSCalculateEvent alloc] init];
     event.eventID = eventId;
@@ -74,7 +74,7 @@
     NSDictionary *params = [command.arguments objectAtIndex:0];
     NSString *loginMethod = params[@"loginMethod"];
     NSNumber *isLoginSuccess = params[@"isLoginSuccess"];
-    NSDictionary<NSString *, NSString *> *extra = params[@"extra"];
+    NSDictionary<NSString *, NSString *> *extra = params[@"extras"];
     
     JANALYTICSLoginEvent *event = [[JANALYTICSLoginEvent alloc] init];
     event.method = loginMethod;
@@ -87,7 +87,7 @@
     NSDictionary *params = [command.arguments objectAtIndex:0];
     NSString *registerMethod = params[@"registerMethod"];
     NSNumber *isRegisterSuccess = params[@"isRegisterSuccess"];
-    NSDictionary<NSString *, NSString *> *extra = params[@"extra"];
+    NSDictionary<NSString *, NSString *> *extra = params[@"extras"];
     
     JANALYTICSRegisterEvent *event = [[JANALYTICSRegisterEvent alloc] init];
     event.method = registerMethod;
@@ -103,7 +103,7 @@
     NSString *browseName = params[@"browseName"];
     NSString *browseType = params[@"browseType"];
     NSNumber *browseDuration = params[@"browseDuration"];
-    NSDictionary<NSString *, NSString *> *extra = params[@"extra"];
+    NSDictionary<NSString *, NSString *> *extra = params[@"extras"];
     
     JANALYTICSBrowseEvent * event = [[JANALYTICSBrowseEvent alloc] init];
     event.contentID = browseId;
@@ -124,7 +124,7 @@
     NSNumber *isPurchaseSuccess = params[@"isPurchaseSuccess"];
     NSString *goodsType = params[@"goodsType"];
     NSNumber *goodsCount = params[@"goodsCount"];
-    NSDictionary<NSString *, NSString *> *extra = params[@"extra"];
+    NSDictionary<NSString *, NSString *> *extra = params[@"extras"];
     
     JANALYTICSPurchaseEvent * event = [[JANALYTICSPurchaseEvent alloc] init];
     event.success = isPurchaseSuccess;
