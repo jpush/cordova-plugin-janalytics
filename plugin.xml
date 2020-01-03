@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <plugin id="cordova-plugin-janalytics"
-    version="1.4.0"
+    version="1.4.1"
     xmlns="http://apache.org/cordova/ns/plugins/1.0"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
@@ -49,7 +49,7 @@
         <!-- 库文件 -->
         <header-file src="src/ios/libs/JANALYTICSService.h" />
         <header-file src="src/ios/libs/JANALYTICSEventObject.h" />
-        <source-file src="src/ios/libs/janalytics-ios-1.2.1.a" framework="true" />
+        <source-file src="src/ios/libs/janalytics-ios-2.1.2.a" framework="true" />
         
         <!-- iOS 插件原生代码 -->
         <header-file src="src/ios/JAnalyticsPlugin.h" />
@@ -93,7 +93,7 @@
             <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
     	</config-file>
 
-        <lib-file src="src/android/libs/janalytics-android-1.2.2.jar" />
+        <lib-file src="src/android/libs/janalytics-android-2.1.0.jar" />
 
         <source-file src="src/android/JAnalyticsPlugin.java" target-dir="src/cn/jiguang/cordova/analytics" />
     </platform>
